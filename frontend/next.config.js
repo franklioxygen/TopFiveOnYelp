@@ -1,6 +1,8 @@
 const withCSS = require('@zeit/next-css');
 
 function HACK_removeMinimizeOptionFromCssLoaders(config) {
+    
+// one css-loader compile bug appears says .css is not recorgnized if 'mininize' not removed
     console.warn(
         'HACK: Removing `minimize` option from `css-loader` entries in Webpack config',
     );
