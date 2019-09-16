@@ -1,6 +1,6 @@
 import fetch from "isomorphic-unfetch";
 import Layout from "../components/MyLayout";
-import Review from "../components/Review";
+import Review from "../components/Review";  // review is the child component to load each review
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Card } from "react-bootstrap";
 import { CardColumns } from "react-bootstrap";
@@ -117,6 +117,8 @@ function getJsonFromUrl(url) {
   return result;
 }
 
+// 'getInitialProps' is nexjs builtin fucntion 
+
 Index.getInitialProps = async function({ req }) {
   let params = getJsonFromUrl(req.url);
   if (params.formLocation == undefined) {
@@ -133,6 +135,7 @@ Index.getInitialProps = async function({ req }) {
 
   return {
     shops: data.map(entry => entry),
+    // pass params to title 
     location: params.formLocation,
     term: params.formShop
   };
