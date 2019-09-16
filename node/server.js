@@ -19,15 +19,16 @@ app.get('/', (req, res) => {
     client.search(searchRequest).then(response => {
         const result = response.jsonBody;
         let resFiltered = result.businesses.filter(function (el) {
+        // find shops has rating over 4 and reviews over 50, sort by review number, select top 5
             return el.rating >= 4 && el.review_count > 50;
-        }).sort((a, b) => (a.review_count < b.review_count)).splice(0, 5);
+        }).sort((a, b) => (a.review_count < b.review_count)).splice(0, 5); 
         res.send(resFiltered);
     }).catch(e => {
         console.log(e);
     });
 });
 
-
+// calls localhost:8080/reviews api to fetch one review
 app.get('/reviews', (req, res) => {
     client.reviews(req.query.id).then(response => {
         res.send(response.jsonBody.reviews[0]);
