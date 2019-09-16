@@ -1,4 +1,5 @@
 import React from "react";
+// asyncReactor is a package fetch data asynchronous in nextjs
 import { asyncReactor } from "async-reactor";
 
 function Loader() {
