@@ -9,4 +9,4 @@ view on:
 http://localhost:3000  
 
 
-![Alt text](/screen%20shot.png "Optional Title")
+![Alt text](/screenshot.png "screenshot")
