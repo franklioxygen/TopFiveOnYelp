@@ -1,8 +1,8 @@
 import fetch from "isomorphic-unfetch";
 import Layout from "../components/MyLayout";
-import Review from "../components/Review";  // review is the child component to load each review
+import Review from "../components/Review"; // review is the child component to load each review
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Card } from "react-bootstrap";
+import { Card, Badge } from "react-bootstrap";
 import { CardColumns } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
@@ -29,35 +29,29 @@ const Index = props => (
     <CardColumns>
       {props.shops.map(shop => (
         <Card bg="light" key={shop.id}>
+          <Card.Header>
+            <a href={shop.url} target="blank">
+              {shop.name}
+            </a>
+          </Card.Header>
           <figure>
             <img src={shop.image_url} alt={shop.alias} />
           </figure>
           <Card.Body>
-            <Card.Title>
-              <a href={shop.url} target="blank">
-                {shop.name}
-              </a>
-            </Card.Title>
-            <Card.Text>
-              <a>Rating: {shop.rating} </a>
-              <a>Reviews: {shop.review_count} </a> <a>Price: {shop.price} </a>
-              <n />
-              <small>
-                <p>
-                  Address:{" "}
-                  {shop.location.address1 +
-                    ", " +
-                    shop.location.city +
-                    " " +
-                    shop.location.state}
-                </p>
-              </small>
-            </Card.Text>
-            <Card.Text>
-              <p>
-                <Review shopId={shop.id}></Review>
-              </p>
-            </Card.Text>
+            <a>Rating: {shop.rating} </a>
+            <a>Reviews: {shop.review_count} </a> <a>Price: </a>
+            <Badge pill variant="info">
+              {shop.price}
+            </Badge>
+            <address class="small">
+              Address:{" "}
+              {shop.location.address1 +
+                ", " +
+                shop.location.city +
+                " " +
+                shop.location.state}
+            </address>
+            <Review shopId={shop.id}></Review>
             <Button
               variant="success"
               href={
@@ -106,21 +100,21 @@ const Index = props => (
   </Layout>
 );
 
-function getJsonFromUrl(url) {
+const getJsonFromUrl = url => {
   if (!url) url = location.search;
-  var query = url.substr(2);
-  var result = {};
+  const query = url.substr(2);
+  const result = {};
   query.split("&").forEach(function(part) {
-    var item = part.split("=");
+    const item = part.split("=");
     result[item[0]] = decodeURIComponent(item[1]);
   });
   return result;
-}
+};
 
-// 'getInitialProps' is nexjs builtin fucntion 
+// 'getInitialProps' is nexjs builtin fucntion
 
-Index.getInitialProps = async function({ req }) {
-  let params = getJsonFromUrl(req.url);
+Index.getInitialProps = async ({ req }) => {
+  const params = getJsonFromUrl(req.url);
   if (params.formLocation == undefined) {
     (params.formLocation = "Alhparetta,GA"), (params.formShop = "Ice Cream");
   }
@@ -130,12 +124,12 @@ Index.getInitialProps = async function({ req }) {
       "&term=" +
       params.formShop
   );
-  let data = await res.json();
+  const data = await res.json();
   console.log(`Show data fetched. Count: ${data.length}`);
 
   return {
     shops: data.map(entry => entry),
-    // pass params to title 
+    // pass params to title
     location: params.formLocation,
     term: params.formShop
   };

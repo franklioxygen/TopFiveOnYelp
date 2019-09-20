@@ -2,11 +2,11 @@ import React from "react";
 // asyncReactor is a package fetch data asynchronous in nextjs
 import { asyncReactor } from "async-reactor";
 
-function Loader() {
+const Loader = () => {
   return <a>Loading ...</a>;
-}
+};
 
-async function AsyncPosts({ shopId }) {
+const AsyncPosts = async ({ shopId }) => {
   const data = await fetch("http://localhost:8080/reviews/?id=" + shopId);
   const review = await data.json();
 
@@ -15,6 +15,6 @@ async function AsyncPosts({ shopId }) {
       {review.user.name}: {review.text.slice(0, 80)}...
     </blockquote>
   );
-}
+};
 
 export default asyncReactor(AsyncPosts, Loader);
