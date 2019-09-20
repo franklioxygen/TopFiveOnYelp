@@ -11,8 +11,9 @@ const AsyncPosts = async ({ shopId }) => {
   const review = await data.json();
 
   return (
-    <blockquote class="small">
-      {review.user.name}: {review.text.slice(0, 80)}...
+    <blockquote className="small">
+      {review.user.name}: {review.text.slice(0, 80)}...{" "}
+      <a href={review.url}>Read More</a>
     </blockquote>
   );
 };
