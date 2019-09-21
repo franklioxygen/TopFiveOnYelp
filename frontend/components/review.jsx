@@ -1,21 +1,36 @@
 import React from "react";
-// asyncReactor is a package fetch data asynchronous in nextjs
-import { asyncReactor } from "async-reactor";
 
-const Loader = () => {
-  return <a>Loading ...</a>;
-};
+class Review extends React.Component {
+  state = {
+    loaded: false,
+    review: null
+  };
+  async componentDidMount() {
+    await fetch(
+      "http://" +
+        window.location.hostname +
+        ":8080/reviews/?id=" +
+        this.props.shopId
+    )
+      .then(json => json.json())
+      .then(data => {
+        this.setState({ review: data, loaded: true });
+      });
+  }
+  render() {
+    const ready = this.state.loaded;
+    return ready ? (
+      <blockquote className="small">
+        {this.state.review.user.name}:{" "}
+        <span className="font-italic">
+          {this.state.review.text.slice(0, 80)}...{" "}
+          <a href={this.state.review.url}>Read More</a>{" "}
+        </span>
+      </blockquote>
+    ) : (
+      "loading"
+    );
+  }
+}
 
-const AsyncPosts = async ({ shopId }) => {
-  const data = await fetch("http://localhost:8080/reviews/?id=" + shopId);
-  const review = await data.json();
-
-  return (
-    <blockquote className="small">
-      {review.user.name}: {review.text.slice(0, 80)}...{" "}
-      <a href={review.url}>Read More</a>
-    </blockquote>
-  );
-};
-
-export default asyncReactor(AsyncPosts, Loader);
+export default Review;

@@ -40,6 +40,9 @@ class Index extends React.Component {
                 >
                   {shop.name}
                 </a>{" "}
+                <Badge pill variant="secondary">
+                  {shop.price}
+                </Badge>
               </Card.Header>
               <figure>
                 <img src={shop.image_url} alt={shop.alias} />
@@ -47,9 +50,7 @@ class Index extends React.Component {
               <Card.Body>
                 <Stars shopStars={shop.rating}></Stars>
                 <a> {shop.review_count} Reviews </a>
-                <Badge pill variant="secondary">
-                  {shop.price}
-                </Badge>
+
                 <address className="small text-muted">
                   {shop.location.address1 +
                     ", " +
@@ -129,7 +130,7 @@ const getJsonFromUrl = url => {
 Index.getInitialProps = async ({ req }) => {
   const params = getJsonFromUrl(req.url);
   if (params.formLocation == undefined) {
-    (params.formLocation = "Alhparetta,GA"), (params.formShop = "Ice Cream");
+    (params.formLocation = "Alhparetta,GA"), (params.formShop = "Burger");
   }
   const res = await fetch(
     "http://localhost:8080?location=" +
